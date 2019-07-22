@@ -4,6 +4,7 @@ Created on Mon Aug 13 16:01:19 2018
 
 @author: Lin_Shien
 """
+
 """
 fastNlMeansDenoising(src, h, templateWindowSize, searchWindowSize) 
 h : Parameter regulating filter strength for luminance component. Bigger h value perfectly removes noise but also removes image details, 
@@ -15,12 +16,14 @@ templateWindowSize : Size in pixels of the template patch that is used to comput
 searchWindowSize : Size in pixels of the window that is used to compute weighted average for given pixel. 
     Should be odd. Affect performance linearly: greater searchWindowsSize - greater denoising time. Recommended value 21 pixels
 """
+
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.cluster import KMeans
+
 
 def find_bound(array, center, coord_y):     # 用來找center的上下界
     up = 0
@@ -119,7 +122,7 @@ eliminateCurve:
 def eliminateCurve(img_name, brightness):            
     images_detect = cv2.imread(img_name)
     lenOfYcoord = images_detect.shape[1]
-    #clone_unchanged = images_detect.copy()   # 用來locate的，不能修改或在上面標輪廓和長方形
+
 
     gray = cv2.cvtColor(images_detect, cv2.COLOR_BGR2GRAY)          # 先轉灰階
     gray = cv2.fastNlMeansDenoising(gray, None, brightness, 7, 21)          # 降躁 
@@ -169,6 +172,7 @@ def eliminateCurve(img_name, brightness):
     '''
     return newimg.copy()
 
+
 def takeOne(elem):
     return elem[0]
 
@@ -217,50 +221,31 @@ def deleCurve_and_create_pieces(img):
     bound_r1 = int(round(abs(center_list[1][0] + center_list[0][0])) / 2) 
     bound_l1 = int(round(abs(center_list[0][0] * 2 - bound_r1)))
 
+    #print(bound_l1)
+    #print(bound_r1)
 
     bound_r2 = int(round(abs(center_list[1][0] + center_list[2][0])) / 2) 
     bound_l2 = bound_r1
 
+    #print(bound_l2)
+    #print(bound_r2)
 
     bound_r3 = int(round(abs(center_list[2][0] + center_list[3][0])) / 2)  
     bound_l3 = bound_r2
 
+    #print(bound_l3)
+    #print(bound_r3)
 
     bound_r4 = int(round(abs(center_list[3][0] * 2 - bound_r3))) 
     bound_l4 = bound_r3
 
+    #print(bound_l4)
+    #print(bound_r4)
     
-    #cv2.imwrite('p1.png', img[:, bound_l1 : bound_r1 + 1])
-    #cv2.imwrite('p2.png', img[:, bound_l2 : bound_r2 + 1])
-    #cv2.imwrite('p3.png', img[:, bound_l3 : bound_r3 + 1])
-    #cv2.imwrite('p4.png', img[:, bound_l4 : bound_r4 + 1])
+    cv2.imwrite('p1.png', img[:, bound_l1 : bound_r1 + 1])
+    cv2.imwrite('p2.png', img[:, bound_l2 : bound_r2 + 1])
+    cv2.imwrite('p3.png', img[:, bound_l3 : bound_r3 + 1])
+    cv2.imwrite('p4.png', img[:, bound_l4 : bound_r4 + 1])
     
     return img[:, bound_l1 : bound_r1 + 1], img[:, bound_l2 : bound_r2 + 1], img[:, bound_l3 : bound_r3 + 1], img[:, bound_l4 : bound_r4 + 1]
 
-
-'''
-center_list = list()
-for i in range(k + 1):
-    y, x = k_means_cluster_centers[i]
-    x = int(round(x))
-    center_list.append((x, y))
-
-center_list.sort(key = takeOne) 
-   
-letter_bounds = list()
-for i in range(k + 1):
-       if i != 0 and i != k:
-           left_bound = center_list[i][0] - find_lineSeg(newimg[:, 0 : center_list[i][0] + 1], -1, 8)
-           right_bound = center_list[i][0] + find_lineSeg(newimg[:, center_list[i][0] : center_list[i + 1][0]], 1, 8)
-           letter_bounds.append((left_bound, right_bound))
-            
-       if i == 0:
-           left_bound = find_lineSeg(newimg[:, 0 : center_list[i][0] + 1], -1, 5)
-           right_bound = center_list[i][0] + find_lineSeg(newimg[:, center_list[i][0] : center_list[i + 1][0]], 1, 8)
-           letter_bounds.append((left_bound, right_bound))
-       
-       if i == k:
-           left_bound = find_lineSeg(newimg[:, 0 : center_list[i][0] + 1], -1, 5)
-           right_bound = center_list[i][0] + find_lineSeg(newimg[:, center_list[i][0] : newimg.shape[1]], 1, 8)
-           letter_bounds.append((left_bound, right_bound))
-'''
