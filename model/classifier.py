@@ -9,6 +9,7 @@ import numpy as np
 import keras
 import cv2
 import Training_CNN
+import matplotlib.pyplot as plt
 from eliminate_curve import eliminateCurve, deleCurve_and_create_pieces
 from keras.models import Sequential
 from SpatialPyramidPooling import SpatialPyramidPooling
@@ -32,6 +33,11 @@ def classify_verification_code():
     model.load_weights(inputfile)
     
     newimg = eliminateCurve('test_img.png', 40)
+    
+    plt.subplot(121)
+    plt.imshow(newimg)
+    plt.show()
+    
     deleCurve_and_create_pieces(newimg)
     
     mapping_list = ['2', '3', '4', '5', '7', '9', 'A', 'C', 'F', 'H', 'K', 'M', 'N', 'P', 'Q', 'R', 'T', 'Y', 'Z']
