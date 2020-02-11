@@ -22,7 +22,7 @@
  3. Third, use [eliminate_curve.py](https://github.com/LinShien/verification_code_parser/blob/master/model/eliminate_curve.py) to eliminate the curve contained in a verification code, result is below like this:  
  ![img4](https://github.com/LinShien/verification_code_parser/blob/master/fig/result.png)  
    
-     The details about how we eliminate the curve is that we use [nonlinear regression(非線性回歸)](https://en.wikipedia.org/wiki/Nonlinear_regression) , and the actual implementation is function LinearRegression() and PolynomialFeatures() with degree = 2 provided by sklearn lib
+     The details about how we eliminate the curve is that we use [linear regression(線性回歸)](https://en.wikipedia.org/wiki/Nonlinear_regression) , and the actual implementation is function LinearRegression() and PolynomialFeatures() with degree = 2 provided by sklearn lib
    
  4. Then, you can use [eliminate_curve.py](https://github.com/LinShien/verification_code_parser/blob/master/model/eliminate_curve.py) to cut the verification code image into 4 pieces like this:  
  ![img3](https://github.com/LinShien/verification_code_parser/blob/master/fig/p1.png)    ![img5](https://github.com/LinShien/verification_code_parser/blob/master/fig/p2.png)    ![img6](https://github.com/LinShien/verification_code_parser/blob/master/fig/p3.png)    ![img7](https://github.com/LinShien/verification_code_parser/blob/master/fig/p4.png)
